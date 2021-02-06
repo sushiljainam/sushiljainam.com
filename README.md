@@ -1,5 +1,5 @@
 # sushiljainam.com
-[website for my username](sushiljainam.com)
+[website for my username](http://sushiljainam.com) [http](http://sushiljainam.com)[https](https://sushiljainam.com)
 
 there are not more than links for GitHub, Stackoverflow, facebook, and twitter profiles.
 
