@@ -124,10 +124,10 @@ body{background:var(--page);font-family:'Hind','Noto Sans Devanagari',sans-serif
 <p class="hint">कार्ड बड़ा देखने के लिए उस पर टैप करें</p>
 
 <div class="actions">
-  <button class="btn" type="button" id="pdfBtn">
+  <a class="btn" href="janmotsav.pdf" download="janmotsav-nimantran.pdf">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10.6l3.3-3.3 1.4 1.4-5.7 5.7-5.7-5.7 1.4-1.4L10 13.6V3h2zM5 19h14v2H5v-2z"/></svg>
-    <span id="pdfLbl">PDF डाउनलोड करें</span>
-  </button>
+    PDF डाउनलोड करें
+  </a>
 </div>
 
 </div>
@@ -174,13 +174,9 @@ body{background:var(--page);font-family:'Hind','Noto Sans Devanagari',sans-serif
   addEventListener('keydown',function(e){if(e.key==='Escape')closeZoom();});
   addEventListener('resize',sizeZoom);
 
-  /* --- PDF: the @page/@media print rules render the card alone on one
-     landscape page, so the browser's own "Save as PDF" is the whole job.
-     Links stay clickable in the resulting PDF. --- */
-  document.getElementById('pdfBtn').addEventListener('click',function(){
-    closeZoom();
-    window.print();
-  });
+  /* The PDF is a static file served next to this page, so the download is a
+     plain link and needs no script. The @page/@media print rules below still
+     make Ctrl/Cmd-P produce the same card-only page. */
 })();
 </script>
 </body></html>
