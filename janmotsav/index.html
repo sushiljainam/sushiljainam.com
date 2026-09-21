@@ -30,12 +30,15 @@ body{background:var(--page);font-family:'Hind','Noto Sans Devanagari',sans-serif
 .mantra{top:12px;font-size:20.5px;font-weight:600}
 .title{top:66px;font-family:'Rozha One',serif;font-size:112px;line-height:1.2;color:var(--navy);
   background:linear-gradient(180deg,#1d3f8a,#0b2360);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.l1{top:197px;font-size:29px;font-weight:500}
-.l2{top:236px;font-size:29px;font-weight:500}
-.l3{top:288px;font-size:27px;font-weight:500}
-.names{top:331px;font-size:46px;font-weight:700}
-.l4{top:406px;font-size:27px;font-weight:500}
-.pill{position:absolute;left:557px;top:485px;width:528px;height:51px;border-radius:26px;
+.l1{top:188px;font-size:28px;font-weight:500}
+.l2{top:225px;font-size:28px;font-weight:500}
+.names{top:268px;font-size:58px;font-weight:700;color:var(--navy)}
+.sub{top:338px;font-size:24px;font-weight:500}
+.l3{top:377px;font-size:26px;font-weight:500}
+.l4{top:412px;font-size:26px;font-weight:500}
+.maplink{color:inherit;text-decoration:none;border-bottom:1.5px dotted rgba(15,42,107,.45)}
+.maplink:hover{border-bottom-style:solid}
+.pill{position:absolute;left:557px;top:506px;width:528px;height:51px;border-radius:26px;
   background:linear-gradient(180deg,#1b4f94 0%,#123f7d 55%,#0e356d 100%);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;
   color:#fff;font-size:32px;font-weight:600;padding-top:5px}
@@ -45,27 +48,15 @@ body{background:var(--page);font-family:'Hind','Noto Sans Devanagari',sans-serif
 .small{font-size:23px;font-weight:500;line-height:32.5px}
 .hd{color:var(--navy);font-weight:700}
 
-/* ---- action panel below the card ---- */
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:20px}
-.panel h2{margin:0 0 14px;font-size:17px;font-weight:700;color:var(--navy);letter-spacing:.2px}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .panel h2{color:#8fb4ff}}
-:root[data-theme="dark"] .panel h2{color:#8fb4ff}
-.row{display:flex;flex-wrap:wrap;gap:10px}
-.btn{flex:1 1 200px;min-width:0;display:flex;align-items:center;justify-content:center;gap:9px;
+/* ---- action bar below the card ---- */
+.actions{display:flex;justify-content:center;margin-top:18px}
+.btn{flex:0 1 260px;min-width:0;display:flex;align-items:center;justify-content:center;gap:9px;
   min-height:50px;padding:12px 16px;border-radius:10px;border:1px solid transparent;
   background:linear-gradient(180deg,#1b4f94 0%,#123f7d 55%,#0e356d 100%);color:#fff;
   font-family:inherit;font-size:16px;font-weight:600;text-decoration:none;cursor:pointer;text-align:center}
 .btn:hover{filter:brightness(1.1)}
-.btn.alt{background:transparent;border-color:var(--line);color:var(--ink)}
-.btn.alt:hover{background:rgba(15,42,107,.06);filter:none}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.alt:hover{background:rgba(255,255,255,.07)}}
-:root[data-theme="dark"] .btn.alt:hover{background:rgba(255,255,255,.07)}
+.btn[disabled]{opacity:.65;cursor:progress}
 .btn svg{width:19px;height:19px;flex:none;fill:currentColor}
-.meta{margin:14px 0 0;font-size:15px;line-height:1.7;color:var(--muted)}
-.meta b{color:var(--ink);font-weight:600}
-.nums{margin-top:8px;font-size:16px;line-height:2;font-weight:600;letter-spacing:.4px;color:var(--ink)}
-.cal-menu{display:none;margin-top:10px;gap:8px}
-.cal-menu.open{display:flex;flex-wrap:wrap}
 .foot{text-align:center;margin-top:18px;font-size:14px;color:var(--muted)}
 .foot a{color:inherit}
 
@@ -86,15 +77,25 @@ body{background:var(--page);font-family:'Hind','Noto Sans Devanagari',sans-serif
 @media (max-width:560px){
   body{padding:12px}
   .btn{flex:1 1 100%}
-  .panel{padding:15px}
   .hint{display:block}
   /* enlarged view: rotate the wide card upright to fill a portrait phone */
   .zoom.open .fit{width:100vh;transform:rotate(90deg)}
 }
+
+/* ---- print / save-as-PDF: the card alone, filling one landscape page ---- */
+@page{size:1642px 958px;margin:0}
 @media print{
-  body{background:none;padding:0}
-  .panel,.foot{display:none}
-  .card{box-shadow:none}
+  html,body{margin:0;padding:0;background:#fff;width:1642px;height:958px;overflow:hidden}
+  .actions,.foot,.hint,.zoom,.zclose{display:none !important}
+  .wrap{max-width:none;margin:0}
+  .fit{width:1642px;height:958px;aspect-ratio:auto;border-radius:0;overflow:visible;page-break-inside:avoid}
+  /* print at natural size: undo the screen fit-to-width scaling */
+  .card{transform:none !important;box-shadow:none;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  /* gradient-clipped text loses its knockout when rasterised for print and
+     paints as a solid block, so fall back to a flat fill */
+  .title{background:none !important;-webkit-text-fill-color:#12306f !important;color:#12306f !important}
+  .maplink{border-bottom-color:rgba(15,42,107,.5)}
 }
 </style></head><body>
 <div class="wrap">
@@ -102,49 +103,31 @@ body{background:var(--page);font-family:'Hind','Noto Sans Devanagari',sans-serif
 <div class="fit" id="fit"><div class="card" id="card" role="img" aria-label="जन्मोत्सव निमंत्रण पत्र">
  <div class="t c navy mantra">।। श्री नेमिनाथाय नमः ।।</div>
  <div class="t c title">जन्मोत्सव</div>
- <div class="t c l1">श्रीमती चैना देवी एवं</div>
- <div class="t c l2">श्रीमती मंजु देवी - श्री रमेशचंद जैन</div>
- <div class="t c l3">खुशी के इन अनुपम क्षणों में आपको सादर आमंत्रित करते हैं कि</div>
- <div class="t c navy names">सुपुत्र सुशील एवं पुत्रवधू एकता</div>
- <div class="t c l4">को पुत्ररत्न की प्राप्ति हुई है। जिसका कार्यक्रम निम्नानुसार है -</div>
+ <div class="t c l1">श्रीमती चैना देवी अपने प्रपौत्र एवं</div>
+ <div class="t c l2">श्रीमती मंजु देवी - श्री रमेशचंद जैन अपने सुपौत्र</div>
+ <div class="t c names">चैतन्य</div>
+ <div class="t c sub">(सुपुत्र - एकता एवं सुशील)</div>
+ <div class="t c l3">के जन्मोत्सव की खुशी के अनुपम क्षणों में आपको सादर आमंत्रित करते हैं।</div>
+ <div class="t c l4">जिसका कार्यक्रम निम्नानुसार है -</div>
  <div class="pill">मंगलवार , 29 सितम्बर 2026</div>
- <div class="t ev" style="left:440px;width:200px;top:562px">स्वरुचिभोज</div>
- <div class="t ev" style="left:666px;width:300px;top:557px">गोपाल जी की कोठी,<br>सापन्दा रोड़</div>
- <div class="t ev" style="left:978px;width:220px;top:562px">प्रातः 11:15 बजे से</div>
- <div class="t blk" style="left:66px;top:571px"><b>विनीत:</b><br>रमेश चंद, विनोद कुमार,<br>संजय, सुशील, अंश, कृषिव मित्तल<br>(उनियारा खुर्द वाले)<br>श्री विला, अजय कॉलोनी 2,<br>केकड़ी<br><span style="letter-spacing:.6px" data-card-phones>&nbsp;</span></div>
+ <div class="t ev" style="left:430px;width:210px;top:583px">स्वरुचिभोज</div>
+ <div class="t ev" style="left:666px;width:300px;top:566px"><a class="maplink" href="https://maps.app.goo.gl/DkhJxSzk3FXkHHut6" target="_blank" rel="noopener noreferrer">गोपाल जी की कोठी,<br>सापन्दा रोड़</a></div>
+ <div class="t ev" style="left:975px;width:225px;top:583px">प्रातः 11:15 बजे से</div>
+ <div class="t blk" style="left:66px;top:571px"><b>विनीत:</b><br>रमेश चंद, विनोद कुमार,<br>संजय, सुशील, अंश,<br>कृषिव मित्तल (उनियारा खुर्द वाले)<br>श्री विला, अजय कॉलोनी 2,<br>केकड़ी<br><span style="letter-spacing:.6px" data-card-phones>&nbsp;</span></div>
  <div class="t small" style="right:46px;top:575px;text-align:right"><span class="hd">कृतस्तम्भ:</span><br>अमोलकचन्द, देवालाल, भागचन्द,<br>भंवरलाल, घनश्याम, कपुरचंद,<br>बाबूलाल, कीमंत कुमार,<br>एवं समस्त मित्तल परिवार<br>उनियारा खुर्द वाले, केकड़ी</div>
  <div class="t small" style="left:538px;width:200px;top:694px;text-align:center"><span class="hd">विशेष आभार:</span><br>संजय - सविता</div>
  <div class="t small hd" style="left:858px;width:200px;top:688px;text-align:center">कुलभूषण:</div>
  <div class="t small" style="left:800px;top:716px">मुन्नी देवी<br>विमला देवी - हनुमान जी<br>विनीता देवी - मुकेश जी</div>
  <div class="t small" style="left:1032px;top:719px">मीनाक्षी - अभिषेक जी<br>ज्योति - अभिषेक जी</div>
- <div class="t small navy" style="left:768px;top:876px;font-weight:600">बाल मनुहार: मोही, आर्जव, अक्षी, इवान, ऋष्वम, सिद्धि, कृषिव</div>
+ <div class="t small navy" style="left:768px;top:876px;font-weight:600">बाल मनुहार: मोही (कृषा), आर्जव, अक्षी, इवान, ऋष्वम, सिद्धि (श्रीनिका), कृषिव</div>
 </div></div>
 <p class="hint">कार्ड बड़ा देखने के लिए उस पर टैप करें</p>
 
-<div class="panel">
-  <h2>कार्यक्रम</h2>
-  <div class="row">
-    <a class="btn" href="https://maps.app.goo.gl/DkhJxSzk3FXkHHut6" target="_blank" rel="noopener noreferrer">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
-      स्थान देखें
-    </a>
-    <button class="btn" type="button" id="calBtn" aria-expanded="false" aria-controls="calMenu">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v2H5.5A2.5 2.5 0 0 0 3 6.5v13A2.5 2.5 0 0 0 5.5 22h13a2.5 2.5 0 0 0 2.5-2.5v-13A2.5 2.5 0 0 0 18.5 4H17V2h-2v2H9V2H7zm12 8v9.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V10h14z"/></svg>
-      कैलेंडर में जोड़ें
-    </button>
-  </div>
-  <div class="cal-menu row" id="calMenu">
-    <a class="btn alt" id="gcal" href="#" target="_blank" rel="noopener noreferrer">Google Calendar</a>
-    <a class="btn alt" id="ical" href="#" download="janmotsav.ics">Apple / Outlook (.ics)</a>
-  </div>
-
-  <p class="meta">
-    <b>स्वरुचिभोज</b> &middot; मंगलवार, 29 सितम्बर 2026 &middot; प्रातः 11:15 बजे से<br>
-    गोपाल जी की कोठी, सापन्दा रोड़, केकड़ी
-  </p>
-
-  <h2 style="margin-top:20px">संपर्क</h2>
-  <div class="nums" id="phones"><span class="meta">नंबर लोड हो रहे हैं…</span></div>
+<div class="actions">
+  <button class="btn" type="button" id="pdfBtn">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10.6l3.3-3.3 1.4 1.4-5.7 5.7-5.7-5.7 1.4-1.4L10 13.6V3h2zM5 19h14v2H5v-2z"/></svg>
+    <span id="pdfLbl">PDF डाउनलोड करें</span>
+  </button>
 </div>
 
 <p class="foot"><a href="../">sushiljainam.com</a></p>
@@ -160,24 +143,17 @@ body{background:var(--page);font-family:'Hind','Noto Sans Devanagari',sans-serif
   addEventListener('resize',fit);fit();
   if(document.fonts&&document.fonts.ready){document.fonts.ready.then(fit);}
 
-  /* --- phone numbers: assembled at runtime so the HTML source carries no digits ---
-     Each number is stored as a base-36 string of its offsets from a base value.
-     Plain text only, no tel: links, per request.                                   */
+  /* --- phone numbers: assembled at runtime so the HTML source carries no digits.
+     Each digit is stored as an offset, decoded below. Plain text, no tel: links. --- */
   var K=[[18,17,17,16,10,10,17,18,17,11],[18,11,10,13,14,14,10,10,15,9],[18,14,12,9,11,10,9,16,18,15]];
   function num(a){var o='';for(var i=0;i<a.length;i++){o+=String.fromCharCode(a[i]+48-9);}return o;}
   var nums=K.map(num);
-  function group(n){return n.slice(0,5)+' '+n.slice(5);}
-  var box=document.getElementById('phones');
-  box.textContent='';
-  nums.forEach(function(n){
-    var d=document.createElement('div');
-    d.textContent='मो — '+group(n);
-    box.appendChild(d);
-  });
-  /* mirror the numbers back onto the card, where the print design expects them */
   var slot=document.querySelector('[data-card-phones]');
-  if(slot){slot.textContent='मो - '+nums[0]+', ';slot.appendChild(document.createElement('br'));
-    slot.appendChild(document.createTextNode(' '+nums[1]+', '+nums[2]));}
+  if(slot){
+    slot.textContent='\u092e\u094b - '+nums[0]+', ';
+    slot.appendChild(document.createElement('br'));
+    slot.appendChild(document.createTextNode('\u00a0'+nums[1]+', '+nums[2]));
+  }
 
   /* --- tap card to enlarge (clone, so numbers are already filled in) --- */
   var zoom=document.getElementById('zoom'),zclose=document.getElementById('zclose'),zfit=null;
@@ -199,32 +175,12 @@ body{background:var(--page);font-family:'Hind','Noto Sans Devanagari',sans-serif
   addEventListener('keydown',function(e){if(e.key==='Escape')closeZoom();});
   addEventListener('resize',sizeZoom);
 
-  /* --- add to calendar --- */
-  var EV={
-    title:'जन्मोत्सव — स्वरुचिभोज (सुशील एवं एकता)',
-    loc:'गोपाल जी की कोठी, सापन्दा रोड़, केकड़ी, राजस्थान',
-    desc:'निमंत्रण: https://sushiljainam.com/janmotsav',
-    start:'20260929T054500Z',  /* 11:15 IST */
-    end:'20260929T093000Z'     /* 15:00 IST */
-  };
-  document.getElementById('gcal').href=
-    'https://calendar.google.com/calendar/render?action=TEMPLATE'+
-    '&text='+encodeURIComponent(EV.title)+
-    '&dates='+EV.start+'/'+EV.end+
-    '&location='+encodeURIComponent(EV.loc)+
-    '&details='+encodeURIComponent(EV.desc);
-
-  var ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//sushiljainam.com//janmotsav//HI',
-    'CALSCALE:GREGORIAN','BEGIN:VEVENT','UID:janmotsav-20260929@sushiljainam.com',
-    'DTSTAMP:'+EV.start,'DTSTART:'+EV.start,'DTEND:'+EV.end,
-    'SUMMARY:'+EV.title,'LOCATION:'+EV.loc.replace(/,/g,'\\,'),
-    'DESCRIPTION:'+EV.desc,'END:VEVENT','END:VCALENDAR'].join('\r\n');
-  document.getElementById('ical').href='data:text/calendar;charset=utf-8,'+encodeURIComponent(ics);
-
-  var btn=document.getElementById('calBtn'),menu=document.getElementById('calMenu');
-  btn.addEventListener('click',function(){
-    var open=menu.classList.toggle('open');
-    btn.setAttribute('aria-expanded',open?'true':'false');
+  /* --- PDF: the @page/@media print rules render the card alone on one
+     landscape page, so the browser's own "Save as PDF" is the whole job.
+     Links stay clickable in the resulting PDF. --- */
+  document.getElementById('pdfBtn').addEventListener('click',function(){
+    closeZoom();
+    window.print();
   });
 })();
 </script>
